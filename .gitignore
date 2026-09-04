@@ -1,0 +1,18 @@
+# Node
+**/node_modules/
+**/dist/
+**/coverage/
+npm-debug.log*
+*.tsbuildinfo
+
+# Env
+.env
+.env.*.local
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+# Claude Code local settings (machine-specific, not project config)
+.claude/settings.local.json
+pgdata
