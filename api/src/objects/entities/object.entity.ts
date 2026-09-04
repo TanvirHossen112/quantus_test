@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import type { Article } from '../../articles/entities/article.entity.js';
 import { Unit } from '../enums/unit.enum.js';
-import type { ObjectProperties } from '../object-properties.interface.js';
+import type { ObjectProperties } from '../interfaces/object-properties.interface.js';
 
 @Entity('objects')
 export class ObjectEntity {

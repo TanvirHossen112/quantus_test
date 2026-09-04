@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { randomUUID } from 'crypto';
 import { AppDataSource } from './data-source.js';
-import { Article } from '../articles/entities/article.entity.js';
-import { ObjectEntity } from '../objects/entities/object.entity.js';
-import { Unit } from '../objects/enums/unit.enum.js';
-import { ObjectProperties } from '../objects/interfaces/object-properties.interface.js';
+import { Article } from '../../articles/entities/article.entity.js';
+import { ObjectEntity } from '../../objects/entities/object.entity.js';
+import { Unit } from '../../objects/enums/unit.enum.js';
+import { ObjectProperties } from '../../objects/interfaces/object-properties.interface.js';
 
 interface SeedObjectDef {
   name: string;
@@ -48,8 +48,7 @@ const seedData: SeedArticleDef[] = [
   {
     code: '10.',
     title: 'Grondwerken',
-    description:
-      'Alle grondwerken voor de realisatie van de bouwput en funderingssleuven.',
+    description: 'Alle grondwerken voor de realisatie van de bouwput en funderingssleuven.',
     children: [
       {
         code: '10.10.',
@@ -162,8 +161,7 @@ const seedData: SeedArticleDef[] = [
             children: [
               {
                 code: '14.12.10.',
-                title:
-                  'Funderingswanden - metselwerk/betonblokken - muurdikte 39 cm',
+                title: 'Funderingswanden - metselwerk/betonblokken - muurdikte 39 cm',
                 objects: directionalWalls(
                   'FUND',
                   'foundation-wall',
@@ -610,10 +608,9 @@ const seedData: SeedArticleDef[] = [
 ];
 
 async function seed() {
+  
   await AppDataSource.initialize();
-  await AppDataSource.query(
-    'TRUNCATE TABLE objects, articles RESTART IDENTITY CASCADE',
-  );
+  await AppDataSource.query('TRUNCATE TABLE objects, articles RESTART IDENTITY CASCADE');
 
   const articlesRepo = AppDataSource.getRepository(Article);
   const objectsRepo = AppDataSource.getRepository(ObjectEntity);
