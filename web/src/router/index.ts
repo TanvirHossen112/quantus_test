@@ -5,5 +5,10 @@ export const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', component: ArticlesView },
+    {
+      path: '/articles/:id/objects',
+      component: () => import('../views/ArticleObjectsView.vue'),
+      props: true,
+    },
   ],
 });

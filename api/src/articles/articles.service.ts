@@ -5,7 +5,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { sanitizeHtml } from 'sanitize-html';
+import sanitizeHtml from 'sanitize-html';
 import type { Repository } from 'typeorm';
 import { Article } from './entities/article.entity.js';
 import { CreateArticleDto } from './dto/create-article.dto.js';
@@ -36,7 +36,7 @@ export class ArticlesService {
   constructor(
     @InjectRepository(Article)
     private readonly articlesRepository: Repository<Article>,
-  ) { }
+  ) {}
 
   async create(dto: CreateArticleDto): Promise<Article> {
     let parentId = dto.parentId ?? null;
@@ -80,7 +80,7 @@ export class ArticlesService {
   async update(id: string, dto: UpdateArticleDto): Promise<Article> {
     const article = await this.findOne(id);
 
-    if ('parentId' in dto) {
+    if (dto.parentId !== undefined) {
       await this.assertNoCycle(id, dto.parentId ?? null);
       article.parentId = dto.parentId ?? null;
     }
@@ -116,7 +116,7 @@ export class ArticlesService {
     articleId: string,
     newParentId: string | null,
   ): Promise<void> {
-    if (newParentId === null) return; // moving to root can't create a cycle
+    if (newParentId === null) return;
     if (newParentId === articleId) {
       throw new BadRequestException('An article cannot be its own parent');
     }
@@ -186,13 +186,17 @@ export class ArticlesService {
       return new ConflictException('An article with this code already exists');
     }
     if (code === PG_FOREIGN_KEY_VIOLATION) {
-      return new BadRequestException('parentId does not reference an existing article');
+      return new BadRequestException(
+        'parentId does not reference an existing article',
+      );
     }
     return error as Error;
   }
 
   private pgErrorCode(error: unknown): string | undefined {
-    return (error as { driverError?: { code?: string }; code?: string })
-      ?.driverError?.code ?? (error as { code?: string })?.code;
+    return (
+      (error as { driverError?: { code?: string }; code?: string })?.driverError
+        ?.code ?? (error as { code?: string })?.code
+    );
   }
 }
