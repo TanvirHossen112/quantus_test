@@ -98,8 +98,6 @@ export class ArticlesService {
   }
 
   async remove(id: string): Promise<void> {
-    // Confirms existence first so a delete on a missing id is a 404, not a
-    // silent no-op (TypeORM's delete() doesn't error on 0 rows affected).
     await this.findOne(id);
 
     try {
@@ -114,10 +112,6 @@ export class ArticlesService {
     }
   }
 
-  // Rejects a parentId update that would make the article its own ancestor
-  // or descendant. Postgres can't express "does this create a cycle" as a
-  // CHECK constraint (it needs a recursive tree walk), so it's enforced
-  // here instead. Same WITH RECURSIVE technique locked in for subtree reads.
   private async assertNoCycle(
     articleId: string,
     newParentId: string | null,
