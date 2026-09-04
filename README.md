@@ -1,4 +1,4 @@
-# Quantus - bill of quantities API (imagineY take-home)
+# Quantus - bill of quantities API (imagineY)
 
 REST API for managing a bill of quantities: nested articles (folders) containing
 priced objects (files) pulled from a Vectorworks drawing.

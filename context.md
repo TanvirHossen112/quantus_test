@@ -110,8 +110,6 @@ GRAND TOTAL                                    €12 617.55
 
 - **Direct and concise.** Ready-to-use output over explanation. One approach, not three options — if there's a real tradeoff, name it in a sentence and pick one.
 - **Full files, not fragments,** when I'm creating something new. Diffs are fine for edits.
-- **Explain NestJS idioms briefly on first use.** I need to defend every line in the walkthrough, so no clever abstractions I'd struggle to justify.
+- **Explain NestJS idioms briefly on first use.** I need to defend every line in the walkthrough, so no over abstractions I'd struggle to justify.
 - **Plain language, short sentences, concrete analogies.** No jargon unless you explain it.
-- **Push back** if I'm about to over-engineer or blow the four-hour budget. Cutting scope is usually the right call.
-- **Watch the clock.** If something takes more than ~30 minutes it probably belongs in "future improvements" instead.
-- Writing for the README should sound natural and human — simple vocabulary, conversational, not formal or robotic.
+- **Push back** if I'm about to over-engineer. Cutting scope is usually the right call.
