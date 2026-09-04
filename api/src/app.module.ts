@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import { ArticlesModule } from './articles/articles.module.js';
 import { ObjectsModule } from './objects/objects.module.js';
+import { SummaryModule } from './summary/summary.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -39,8 +40,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
     }),
     ArticlesModule,
     ObjectsModule,
+    SummaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
