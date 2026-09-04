@@ -10,5 +10,13 @@ export const router = createRouter({
       component: () => import('../views/ArticleObjectsView.vue'),
       props: true,
     },
+    {
+      path: '/objects',
+      component: () => import('../views/ObjectsView.vue'),
+    },
+    {
+      path: '/result',
+      component: () => import('../views/ResultView.vue'),
+    },
   ],
 });

@@ -49,7 +49,7 @@ export class ObjectsService {
     try {
       const objects = await this.objectsRepository.find({
         where: articleId ? { articleId } : {},
-        order: { name: 'ASC' },
+        order: { name: 'DESC' },
       });
       return objects.map((object) => this.toResponse(object));
     } catch (error) {

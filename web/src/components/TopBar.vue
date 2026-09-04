@@ -3,6 +3,8 @@
     <span class="brand">Quantus</span>
     <nav>
       <RouterLink to="/" class="nav-link">Articles</RouterLink>
+      <RouterLink to="/objects" class="nav-link">Objects</RouterLink>
+      <RouterLink to="/result" class="nav-link">Result</RouterLink>
     </nav>
   </header>
 </template>
