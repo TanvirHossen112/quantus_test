@@ -17,7 +17,7 @@ export function formatQuantity(unit: QuantusObject['unit'], quantity: number): s
   return `${rounded} ${formatUnit(unit)}`;
 }
 
-export const UNIT_OPTIONS = ['m', 'm2', 'm3', 'kg', 'piece'] as const;y
+export const UNIT_OPTIONS = ['m', 'm2', 'm3', 'kg', 'piece'] as const;
 
 export const REQUIRED_PROPERTIES: Record<string, string[]> = {
   m: ['length'],
