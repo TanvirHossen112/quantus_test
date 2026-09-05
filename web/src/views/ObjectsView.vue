@@ -3,7 +3,9 @@
     <section class="panel list-panel">
       <header>
         <h2>Objects</h2>
-        <button type="button" class="primary" @click="startCreate">+ New object</button>
+        <button type="button" class="primary" @click="startCreate">
+          + New object
+        </button>
       </header>
 
       <p v-if="loading">Loading…</p>
@@ -31,11 +33,17 @@
             >
               <td>{{ object.name }}</td>
               <td class="muted">{{ articleLabel(object.articleId) }}</td>
-              <td class="num">{{ formatQuantity(object.unit, object.quantity) }}</td>
+              <td class="num">
+                {{ formatQuantity(object.unit, object.quantity) }}
+              </td>
               <td class="num">{{ formatCents(object.unitPriceCents) }}</td>
               <td class="num">{{ formatCents(object.lineTotalCents) }}</td>
               <td class="actions-cell">
-                <button type="button" class="danger-link" @click.stop="deleteObject(object.id)">
+                <button
+                  type="button"
+                  class="danger-link"
+                  @click.stop="deleteObject(object.id)"
+                >
                   Delete
                 </button>
               </td>
@@ -44,11 +52,24 @@
         </table>
 
         <div class="pagination">
-          <button type="button" :disabled="currentPage === 1" @click="currentPage--">
+          <button
+            type="button"
+            :disabled="currentPage === 1"
+            @click="currentPage--"
+          >
             ← Prev
           </button>
-          <span>Page {{ currentPage }} of {{ totalPages }} ({{ objects.length }} objects)</span>
-          <button type="button" :disabled="currentPage === totalPages" @click="currentPage++">
+          <span
+            >Page {{ currentPage }} of {{ totalPages }} ({{
+              objects.length
+            }}
+            objects)</span
+          >
+          <button
+            type="button"
+            :disabled="currentPage === totalPages"
+            @click="currentPage++"
+          >
             Next →
           </button>
         </div>
@@ -75,29 +96,50 @@
 
         <label>
           Type
-          <input v-model="form.type" required placeholder="wall, door, window…" />
+          <input
+            v-model="form.type"
+            required
+            placeholder="wall, door, window…"
+          />
         </label>
 
         <label>
           Unit
           <select v-model="form.unit">
-            <option v-for="unit in UNIT_OPTIONS" :key="unit" :value="unit">{{ unit }}</option>
+            <option v-for="unit in UNIT_OPTIONS" :key="unit" :value="unit">
+              {{ unit }}
+            </option>
           </select>
         </label>
         <label v-for="key in visibleProperties" :key="key">
           {{ key }}
-          <input v-model.number="form.properties[key]" type="number" step="any" required />
+          <input
+            v-model.number="form.properties[key]"
+            type="number"
+            step="any"
+            required
+          />
         </label>
 
         <label>
           Unit price (€)
-          <input v-model.number="form.unitPriceEuros" type="number" step="0.01" min="0" required />
+          <input
+            v-model.number="form.unitPriceEuros"
+            type="number"
+            step="0.01"
+            min="0"
+            required
+          />
         </label>
 
         <label>
           Article
           <select v-model="form.articleId" required>
-            <option v-for="article in sortedArticles" :key="article.id" :value="article.id">
+            <option
+              v-for="article in sortedArticles"
+              :key="article.id"
+              :value="article.id"
+            >
               {{ article.code }} {{ article.title }}
             </option>
           </select>
@@ -107,7 +149,7 @@
 
         <div class="form-actions">
           <button type="submit" class="primary" :disabled="saving">
-            {{ saving ? 'Saving…' : 'Save' }}
+            {{ saving ? "Saving…" : "Save" }}
           </button>
           <button type="button" @click="cancelForm">Cancel</button>
           <button
@@ -126,14 +168,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
-import { articlesApi } from '../api/articles';
-import { objectsApi } from '../api/objects';
-import { ApiError } from '../api/client';
-import { formatCents, parseEurosToCents } from '../utils/money';
-import { formatQuantity, REQUIRED_PROPERTIES, UNIT_OPTIONS } from '../utils/units';
-import type { Article } from '../types/article';
-import type { QuantusObject } from '../types/object';
+import { computed, onMounted, reactive, ref } from "vue";
+import { articlesApi } from "../api/articles";
+import { objectsApi } from "../api/objects";
+import { ApiError } from "../api/client";
+import { formatCents, parseEurosToCents } from "../utils/money";
+import {
+  formatQuantity,
+  REQUIRED_PROPERTIES,
+  UNIT_OPTIONS,
+} from "../utils/units";
+import type { Article } from "../types/article";
+import type { QuantusObject } from "../types/object";
 
 const objects = ref<QuantusObject[]>([]);
 const articles = ref<Article[]>([]);
@@ -143,23 +189,25 @@ const saving = ref(false);
 const PAGE_SIZE = 20;
 const currentPage = ref(1);
 
-const totalPages = computed(() => Math.max(1, Math.ceil(objects.value.length / PAGE_SIZE)));
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil(objects.value.length / PAGE_SIZE)),
+);
 const pagedObjects = computed(() => {
   const start = (currentPage.value - 1) * PAGE_SIZE;
   return objects.value.slice(start, start + PAGE_SIZE);
 });
 
-type PanelMode = 'idle' | 'edit' | 'create';
-const panelMode = ref<PanelMode>('idle');
+type PanelMode = "idle" | "edit" | "create";
+const panelMode = ref<PanelMode>("idle");
 const selectedId = ref<string | null>(null);
 const form = reactive({
-  drawingUuid: '',
-  name: '',
-  type: '',
-  unit: 'm' as string,
+  drawingUuid: "",
+  name: "",
+  type: "",
+  unit: "m" as string,
   unitPriceEuros: 0,
   properties: {} as Record<string, number | undefined>,
-  articleId: '',
+  articleId: "",
 });
 
 async function load() {
@@ -172,7 +220,8 @@ async function load() {
     ]);
     if (currentPage.value > totalPages.value) currentPage.value = 1;
   } catch (error) {
-    errorMessage.value = error instanceof ApiError ? error.message : 'Failed to load objects';
+    errorMessage.value =
+      error instanceof ApiError ? error.message : "Failed to load objects";
   } finally {
     loading.value = false;
   }
@@ -192,7 +241,7 @@ function articleLabel(articleId: string): string {
 const visibleProperties = computed(() => REQUIRED_PROPERTIES[form.unit] ?? []);
 
 function selectObject(object: QuantusObject) {
-  panelMode.value = 'edit';
+  panelMode.value = "edit";
   selectedId.value = object.id;
   form.drawingUuid = object.drawingUuid;
   form.name = object.name;
@@ -205,20 +254,20 @@ function selectObject(object: QuantusObject) {
 }
 
 function startCreate() {
-  panelMode.value = 'create';
+  panelMode.value = "create";
   selectedId.value = null;
   form.drawingUuid = crypto.randomUUID();
-  form.name = '';
-  form.type = '';
-  form.unit = 'm';
+  form.name = "";
+  form.type = "";
+  form.unit = "m";
   form.unitPriceEuros = 0;
   form.properties = {};
-  form.articleId = sortedArticles.value[0]?.id ?? '';
+  form.articleId = sortedArticles.value[0]?.id ?? "";
   errorMessage.value = null;
 }
 
 function cancelForm() {
-  panelMode.value = 'idle';
+  panelMode.value = "idle";
   selectedId.value = null;
   errorMessage.value = null;
 }
@@ -243,23 +292,24 @@ async function saveForm() {
   saving.value = true;
   errorMessage.value = null;
   try {
-    if (panelMode.value === 'create') {
+    if (panelMode.value === "create") {
       const created = await objectsApi.create(buildPayload());
       await load();
       selectObject(created);
-    } else if (panelMode.value === 'edit' && selectedId.value) {
+    } else if (panelMode.value === "edit" && selectedId.value) {
       await objectsApi.update(selectedId.value, buildPayload());
       await load();
     }
   } catch (error) {
-    errorMessage.value = error instanceof ApiError ? error.message : 'Save failed';
+    errorMessage.value =
+      error instanceof ApiError ? error.message : "Save failed";
   } finally {
     saving.value = false;
   }
 }
 
 async function deleteObject(id: string) {
-  if (!confirm('Delete this object? This cannot be undone.')) return;
+  if (!confirm("Delete this object? This cannot be undone.")) return;
   saving.value = true;
   errorMessage.value = null;
   try {
@@ -267,7 +317,8 @@ async function deleteObject(id: string) {
     if (selectedId.value === id) cancelForm();
     await load();
   } catch (error) {
-    errorMessage.value = error instanceof ApiError ? error.message : 'Delete failed';
+    errorMessage.value =
+      error instanceof ApiError ? error.message : "Delete failed";
   } finally {
     saving.value = false;
   }

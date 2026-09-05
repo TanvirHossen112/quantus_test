@@ -12,11 +12,15 @@
         :title="expanded ? 'Collapse' : 'Expand'"
         @click="expanded = !expanded"
       >
-        {{ expanded ? '−' : '+' }}
+        {{ expanded ? "−" : "+" }}
       </button>
       <span v-else class="toggle-expand-spacer" />
 
-      <button type="button" class="row-main" @click="emit('select', props.article)">
+      <button
+        type="button"
+        class="row-main"
+        @click="emit('select', props.article)"
+      >
         <span class="code">{{ props.article.code }}</span>
         <span class="title">{{ props.article.title }}</span>
       </button>
@@ -36,8 +40,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Article } from '../types/article';
+import { ref } from "vue";
+import type { Article } from "../types/article";
 
 const props = defineProps<{
   article: Article;
@@ -49,7 +53,8 @@ const emit = defineEmits<{
   select: [article: Article];
 }>();
 const expanded = ref(false);
-const hasChildren = props.article.children != null && props.article.children.length > 0;
+const hasChildren =
+  props.article.children != null && props.article.children.length > 0;
 </script>
 
 <style scoped>

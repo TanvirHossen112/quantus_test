@@ -11,4 +11,4 @@ import { SummaryService } from './summary.service.js';
   controllers: [SummaryController],
   providers: [SummaryService, QuantityService],
 })
-export class SummaryModule { }
+export class SummaryModule {}

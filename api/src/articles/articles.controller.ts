@@ -18,7 +18,7 @@ import { UpdateArticleDto } from './dto/update-article.dto.js';
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
-  
+
   @Post()
   create(@Body() dto: CreateArticleDto) {
     return this.articlesService.create(dto);
@@ -35,7 +35,10 @@ export class ArticlesController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateArticleDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateArticleDto,
+  ) {
     return this.articlesService.update(id, dto);
   }
 

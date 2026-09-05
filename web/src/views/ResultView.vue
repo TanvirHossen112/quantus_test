@@ -24,16 +24,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { articlesApi } from '../api/articles';
-import { objectsApi } from '../api/objects';
-import { summaryApi } from '../api/summary';
-import { ApiError } from '../api/client';
-import { formatCents } from '../utils/money';
-import { groupByArticleId } from '../utils/rollup';
-import ResultTreeNode from '../components/ResultTreeNode.vue';
-import type { Article } from '../types/article';
-import type { QuantusObject } from '../types/object';
+import { onMounted, ref } from "vue";
+import { articlesApi } from "../api/articles";
+import { objectsApi } from "../api/objects";
+import { summaryApi } from "../api/summary";
+import { ApiError } from "../api/client";
+import { formatCents } from "../utils/money";
+import { groupByArticleId } from "../utils/rollup";
+import ResultTreeNode from "../components/ResultTreeNode.vue";
+import type { Article } from "../types/article";
+import type { QuantusObject } from "../types/object";
 
 const tree = ref<Article[]>([]);
 const objectsByArticleId = ref<Map<string, QuantusObject[]>>(new Map());
@@ -54,7 +54,8 @@ async function load() {
     objectsByArticleId.value = groupByArticleId(objects);
     grandTotalCents.value = summary.grandTotal;
   } catch (error) {
-    errorMessage.value = error instanceof ApiError ? error.message : 'Failed to load result';
+    errorMessage.value =
+      error instanceof ApiError ? error.message : "Failed to load result";
   } finally {
     loading.value = false;
   }
@@ -68,7 +69,11 @@ onMounted(load);
   max-width: 1000px;
   margin: 0 auto;
   padding: 1.5rem;
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
 }
 .empty,
 .error {

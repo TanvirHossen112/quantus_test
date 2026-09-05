@@ -1,7 +1,6 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { Module } from '@nestjs/common';
-import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,17 +9,10 @@ import { ArticlesModule } from './articles/articles.module.js';
 import { ObjectsModule } from './objects/objects.module.js';
 import { SummaryModule } from './summary/summary.module.js';
 
-export const { ObserveModule, ObserveInstrument } = createObserveModule();
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 @Module({
   imports: [
-    ObserveModule.forRoot({
-      appKey: process.env.OBSERVE_APP_KEY ?? '',
-      appSecret: process.env.OBSERVE_APP_SECRET ?? '',
-      serviceId: 'nest-typescript-starter',
-    }),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -45,4 +37,4 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

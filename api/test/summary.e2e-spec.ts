@@ -94,8 +94,10 @@ describe('Summary (e2e)', () => {
     expect(masonrySubtotal.subtotal).toBe(102000 + 48546);
     expect(roofingSubtotal.subtotal).toBe(250000);
     expect(materialsAtTopLevel).toBeUndefined();
-    expect(after.body.grandTotal - before.body.grandTotal).toBe( 102000 + 48546 + 250000 );
-    
+    expect(after.body.grandTotal - before.body.grandTotal).toBe(
+      102000 + 48546 + 250000,
+    );
+
     await request(app.getHttpServer())
       .delete(`/api/v1/objects/${roofObject.body.id}`)
       .expect(204);

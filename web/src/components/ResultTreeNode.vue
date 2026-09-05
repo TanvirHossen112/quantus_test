@@ -1,9 +1,6 @@
 <template>
   <li>
-    <div
-      class="row article-row"
-      :style="{ paddingLeft: `${depth * 1.25}rem` }"
-    >
+    <div class="row article-row" :style="{ paddingLeft: `${depth * 1.25}rem` }">
       <button
         v-if="hasNested"
         type="button"
@@ -11,7 +8,7 @@
         :title="expanded ? 'Collapse' : 'Expand'"
         @click="expanded = !expanded"
       >
-        {{ expanded ? '−' : '+' }}
+        {{ expanded ? "−" : "+" }}
       </button>
       <span v-else class="toggle-expand-spacer" />
 
@@ -36,7 +33,9 @@
       >
         <span class="toggle-expand-spacer" />
         <span class="object-name">{{ object.name }}</span>
-        <span class="object-qty">{{ formatQuantity(object.unit, object.quantity) }}</span>
+        <span class="object-qty">{{
+          formatQuantity(object.unit, object.quantity)
+        }}</span>
         <span class="amount">{{ formatCents(object.lineTotalCents) }}</span>
       </li>
     </ul>
@@ -44,12 +43,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { formatCents } from '../utils/money';
-import { formatQuantity } from '../utils/units';
-import { computeSubtotal } from '../utils/rollup';
-import type { Article } from '../types/article';
-import type { QuantusObject } from '../types/object';
+import { ref } from "vue";
+import { formatCents } from "../utils/money";
+import { formatQuantity } from "../utils/units";
+import { computeSubtotal } from "../utils/rollup";
+import type { Article } from "../types/article";
+import type { QuantusObject } from "../types/object";
 
 const props = defineProps<{
   article: Article;

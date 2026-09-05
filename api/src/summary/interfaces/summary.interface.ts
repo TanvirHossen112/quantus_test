@@ -1,6 +1,6 @@
-import { ArticleSubtotal } from "./article-subtotal.interface.js";
+import { ArticleSubtotal } from './article-subtotal.interface.js';
 
 export interface Summary {
-    articles: ArticleSubtotal[];
-    grandTotal: number;
+  articles: ArticleSubtotal[];
+  grandTotal: number;
 }

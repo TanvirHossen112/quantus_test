@@ -78,7 +78,8 @@ export class ObjectsService {
     if (dto.name !== undefined) object.name = dto.name;
     if (dto.type !== undefined) object.type = dto.type;
     if (dto.unit !== undefined) object.unit = dto.unit;
-    if (dto.unitPriceCents !== undefined) object.unitPriceCents = dto.unitPriceCents;
+    if (dto.unitPriceCents !== undefined)
+      object.unitPriceCents = dto.unitPriceCents;
     if (dto.properties !== undefined) object.properties = dto.properties;
     if (dto.articleId !== undefined) object.articleId = dto.articleId;
 
@@ -101,7 +102,10 @@ export class ObjectsService {
   }
 
   private toResponse(object: ObjectEntity): ObjectResponse {
-    const quantity = this.quantityService.calculate(object.unit, object.properties);
+    const quantity = this.quantityService.calculate(
+      object.unit,
+      object.properties,
+    );
     return {
       ...object,
       quantity,
@@ -112,16 +116,22 @@ export class ObjectsService {
   private mapWriteError(error: unknown): Error {
     const code = this.pgErrorCode(error);
     if (code === PG_UNIQUE_VIOLATION) {
-      return new ConflictException('An object with this drawingUuid already exists');
+      return new ConflictException(
+        'An object with this drawingUuid already exists',
+      );
     }
     if (code === PG_FOREIGN_KEY_VIOLATION) {
-      return new BadRequestException('articleId does not reference an existing article');
+      return new BadRequestException(
+        'articleId does not reference an existing article',
+      );
     }
     return error as Error;
   }
 
   private pgErrorCode(error: unknown): string | undefined {
-    return (error as { driverError?: { code?: string }; code?: string })
-      ?.driverError?.code ?? (error as { code?: string })?.code;
+    return (
+      (error as { driverError?: { code?: string }; code?: string })?.driverError
+        ?.code ?? (error as { code?: string })?.code
+    );
   }
 }

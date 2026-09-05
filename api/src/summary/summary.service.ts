@@ -15,7 +15,7 @@ export class SummaryService {
     @InjectRepository(ObjectEntity)
     private readonly objectsRepository: Repository<ObjectEntity>,
     private readonly quantityService: QuantityService,
-  ) { }
+  ) {}
 
   async getSummary(): Promise<Summary> {
     const [articles, objects] = await Promise.all([
@@ -25,7 +25,10 @@ export class SummaryService {
 
     const ownTotalByArticleId = new Map<string, number>();
     for (const object of objects) {
-      const quantity = this.quantityService.calculate(object.unit, object.properties);
+      const quantity = this.quantityService.calculate(
+        object.unit,
+        object.properties,
+      );
       const lineTotalCents = Math.round(quantity * object.unitPriceCents);
       ownTotalByArticleId.set(
         object.articleId,
@@ -44,17 +47,22 @@ export class SummaryService {
     const subtotalOf = (article: Article): number => {
       const ownTotal = ownTotalByArticleId.get(article.id) ?? 0;
       const children = childrenByParentId.get(article.id) ?? [];
-      const childrenTotal = children.reduce((sum, child) => sum + subtotalOf(child), 0);
+      const childrenTotal = children.reduce(
+        (sum, child) => sum + subtotalOf(child),
+        0,
+      );
       return ownTotal + childrenTotal;
     };
 
     const topLevelArticles = childrenByParentId.get(null) ?? [];
-    const articleSubtotals: ArticleSubtotal[] = topLevelArticles.map((article) => ({
-      id: article.id,
-      code: article.code,
-      title: article.title,
-      subtotal: subtotalOf(article),
-    }));
+    const articleSubtotals: ArticleSubtotal[] = topLevelArticles.map(
+      (article) => ({
+        id: article.id,
+        code: article.code,
+        title: article.title,
+        subtotal: subtotalOf(article),
+      }),
+    );
 
     const grandTotal = articleSubtotals.reduce((sum, a) => sum + a.subtotal, 0);
 

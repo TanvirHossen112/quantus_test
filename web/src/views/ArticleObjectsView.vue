@@ -28,7 +28,13 @@
           <td>{{ object.type }}</td>
           <td>{{ formatUnit(object.unit) }}</td>
           <td class="num">{{ formatCents(object.unitPriceCents) }}</td>
-          <td class="num">{{ object.quantity.toLocaleString(undefined, { maximumFractionDigits: 3 }) }}</td>
+          <td class="num">
+            {{
+              object.quantity.toLocaleString(undefined, {
+                maximumFractionDigits: 3,
+              })
+            }}
+          </td>
           <td class="num">{{ formatCents(object.lineTotalCents) }}</td>
         </tr>
       </tbody>
@@ -43,15 +49,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { RouterLink } from 'vue-router';
-import { articlesApi } from '../api/articles';
-import { objectsApi } from '../api/objects';
-import { ApiError } from '../api/client';
-import { formatCents } from '../utils/money';
-import { formatUnit } from '../utils/units';
-import type { Article } from '../types/article';
-import type { QuantusObject } from '../types/object';
+import { computed, onMounted, ref } from "vue";
+import { RouterLink } from "vue-router";
+import { articlesApi } from "../api/articles";
+import { objectsApi } from "../api/objects";
+import { ApiError } from "../api/client";
+import { formatCents } from "../utils/money";
+import { formatUnit } from "../utils/units";
+import type { Article } from "../types/article";
+import type { QuantusObject } from "../types/object";
 
 const props = defineProps<{ id: string }>();
 
@@ -69,7 +75,8 @@ async function load() {
       objectsApi.list(props.id),
     ]);
   } catch (error) {
-    errorMessage.value = error instanceof ApiError ? error.message : 'Failed to load objects';
+    errorMessage.value =
+      error instanceof ApiError ? error.message : "Failed to load objects";
   } finally {
     loading.value = false;
   }
@@ -86,7 +93,11 @@ const subtotalCents = computed(() =>
   max-width: 900px;
   margin: 0 auto;
   padding: 1.5rem;
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
 }
 header {
   margin-bottom: 1.5rem;

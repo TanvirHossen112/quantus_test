@@ -1,5 +1,5 @@
-import type { Article } from '../types/article';
-import type { QuantusObject } from '../types/object';
+import type { Article } from "../types/article";
+import type { QuantusObject } from "../types/object";
 
 export function computeSubtotal(
   article: Article,
@@ -16,7 +16,9 @@ export function computeSubtotal(
   return ownTotal + childrenTotal;
 }
 
-export function groupByArticleId(objects: QuantusObject[]): Map<string, QuantusObject[]> {
+export function groupByArticleId(
+  objects: QuantusObject[],
+): Map<string, QuantusObject[]> {
   const map = new Map<string, QuantusObject[]>();
   for (const object of objects) {
     const siblings = map.get(object.articleId) ?? [];

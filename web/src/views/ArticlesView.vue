@@ -3,7 +3,9 @@
     <section class="panel tree-panel">
       <header>
         <h2>Articles</h2>
-        <button type="button" class="primary" @click="startCreate(null)">+ New root article</button>
+        <button type="button" class="primary" @click="startCreate(null)">
+          + New root article
+        </button>
       </header>
 
       <p v-if="loading">Loading…</p>
@@ -28,7 +30,9 @@
       </div>
 
       <form v-else class="detail-form" @submit.prevent="saveForm">
-        <p v-if="panelMode === 'create'" class="hint">New article under: {{ parentLabel }}</p>
+        <p v-if="panelMode === 'create'" class="hint">
+          New article under: {{ parentLabel }}
+        </p>
         <RouterLink
           v-if="panelMode === 'edit' && selectedId"
           :to="`/articles/${selectedId}/objects`"
@@ -39,7 +43,12 @@
 
         <label>
           Code
-          <input v-model="form.code" required maxlength="50" placeholder="20.11.10." />
+          <input
+            v-model="form.code"
+            required
+            maxlength="50"
+            placeholder="20.11.10."
+          />
         </label>
 
         <label>
@@ -49,14 +58,18 @@
 
         <label>
           Description
-          <textarea v-model="form.description" rows="8" maxlength="10000"></textarea>
+          <textarea
+            v-model="form.description"
+            rows="8"
+            maxlength="10000"
+          ></textarea>
         </label>
 
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
         <div class="actions">
           <button type="submit" class="primary" :disabled="saving">
-            {{ saving ? 'Saving…' : 'Save' }}
+            {{ saving ? "Saving…" : "Save" }}
           </button>
           <button type="button" @click="cancelForm">Cancel</button>
           <button
@@ -82,25 +95,25 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue';
-import { RouterLink } from 'vue-router';
-import { articlesApi } from '../api/articles';
-import { ApiError } from '../api/client';
-import ArticleTreeNode from '../components/ArticleTreeNode.vue';
-import type { Article } from '../types/article';
+import { computed, onMounted, reactive, ref } from "vue";
+import { RouterLink } from "vue-router";
+import { articlesApi } from "../api/articles";
+import { ApiError } from "../api/client";
+import ArticleTreeNode from "../components/ArticleTreeNode.vue";
+import type { Article } from "../types/article";
 
 const tree = ref<Article[]>([]);
 const loading = ref(true);
 const errorMessage = ref<string | null>(null);
 
-type PanelMode = 'idle' | 'edit' | 'create';
-const panelMode = ref<PanelMode>('idle');
+type PanelMode = "idle" | "edit" | "create";
+const panelMode = ref<PanelMode>("idle");
 const selectedId = ref<string | null>(null);
-const form = reactive({ 
-  code: '', 
-  title: '', 
-  description: '', 
-  parentId: null as string | null 
+const form = reactive({
+  code: "",
+  title: "",
+  description: "",
+  parentId: null as string | null,
 });
 const saving = ref(false);
 
@@ -110,7 +123,8 @@ async function loadTree() {
   try {
     tree.value = await articlesApi.tree();
   } catch (error) {
-    errorMessage.value = error instanceof ApiError ? error.message : 'Failed to load articles';
+    errorMessage.value =
+      error instanceof ApiError ? error.message : "Failed to load articles";
   } finally {
     loading.value = false;
   }
@@ -128,27 +142,27 @@ function findById(nodes: Article[], id: string): Article | null {
 }
 
 function selectArticle(article: Article) {
-  panelMode.value = 'edit';
+  panelMode.value = "edit";
   selectedId.value = article.id;
   form.code = article.code;
   form.title = article.title;
-  form.description = article.description ?? '';
+  form.description = article.description ?? "";
   form.parentId = article.parentId;
   errorMessage.value = null;
 }
 
 function startCreate(parentId: string | null) {
-  panelMode.value = 'create';
+  panelMode.value = "create";
   selectedId.value = null;
-  form.code = '';
-  form.title = '';
-  form.description = '';
+  form.code = "";
+  form.title = "";
+  form.description = "";
   form.parentId = parentId;
   errorMessage.value = null;
 }
 
 function cancelForm() {
-  panelMode.value = 'idle';
+  panelMode.value = "idle";
   selectedId.value = null;
   errorMessage.value = null;
 }
@@ -157,7 +171,7 @@ async function saveForm() {
   saving.value = true;
   errorMessage.value = null;
   try {
-    if (panelMode.value === 'create') {
+    if (panelMode.value === "create") {
       const created = await articlesApi.create({
         code: form.code,
         title: form.title,
@@ -166,7 +180,7 @@ async function saveForm() {
       });
       await loadTree();
       selectArticle(created);
-    } else if (panelMode.value === 'edit' && selectedId.value) {
+    } else if (panelMode.value === "edit" && selectedId.value) {
       await articlesApi.update(selectedId.value, {
         code: form.code,
         title: form.title,
@@ -175,7 +189,8 @@ async function saveForm() {
       await loadTree();
     }
   } catch (error) {
-    errorMessage.value = error instanceof ApiError ? error.message : 'Save failed';
+    errorMessage.value =
+      error instanceof ApiError ? error.message : "Save failed";
   } finally {
     saving.value = false;
   }
@@ -190,14 +205,15 @@ async function deleteSelected() {
     cancelForm();
     await loadTree();
   } catch (error) {
-    errorMessage.value = error instanceof ApiError ? error.message : 'Delete failed';
+    errorMessage.value =
+      error instanceof ApiError ? error.message : "Delete failed";
   } finally {
     saving.value = false;
   }
 }
 
 const parentLabel = computed(() => {
-  if (form.parentId === null) return 'root (top-level)';
+  if (form.parentId === null) return "root (top-level)";
   const parent = findById(tree.value, form.parentId);
   return parent ? `${parent.code} ${parent.title}` : form.parentId;
 });
